@@ -15,7 +15,7 @@ const textColorGradient = keyframes`
 
 const HightlightText = styled.span`
   background-size: 400% 400%;
-  background-image: linear-gradient(to right, #366eff, #23e5ff, #ff7fdb);
+  background-image: linear-gradient(to right, #ae100e, #ae110e, #fff);
   -webkit-background-clip: text; //将元素的背景限制在文字中
   animation: ${textColorGradient} 10s ease infinite;
   color: transparent;
@@ -38,12 +38,10 @@ const SectionHomepageHero = () => {
     return (
       <Box marginTop="112px">
         <Box>
-          <Typography variant="h1">LXDAO is an</Typography>
-          <HightlightText>R&amp;D</HightlightText>
-          <Typography variant="h1" display="inline">
-            -focused DAO
-          </Typography>
-          <Typography variant="h1">in Web3</Typography>
+          <Typography variant="h1">8DAO is a</Typography>
+          <HightlightText>MEMBERSHIP-BASED</HightlightText>
+
+          <Typography variant="h1"> web3 community</Typography>
         </Box>
       </Box>
     );
@@ -58,6 +56,7 @@ const SectionHomepageHero = () => {
       alignItems="center"
       textAlign="center"
       gap={{ lg: '120px', xs: '40px' }}
+      color="#fff"
     >
       <Box
         display="flex"
@@ -69,20 +68,17 @@ const SectionHomepageHero = () => {
         <Title />
         <Box display={{ md: 'block', sm: 'none', xs: 'none' }}>
           <Typography variant="subtitle1" lineHeight="36px" color="#667085">
-            Our Vision & Consensus - The technologies, concepts and ideas of
-            Web3
-          </Typography>
-          <Typography variant="subtitle1" lineHeight="36px" color="#667085">
-            will be used by a billion people in a decade.
+            A community of like minded people from different backgrounds jointly
+            building and investing in the Web3 ecosystem
           </Typography>
         </Box>
         <Box display={{ md: 'none', sm: 'block', xs: 'block' }}>
           <Typography variant="subtitle1" lineHeight="36px" color="#667085">
-            Our Vision & Consensus - The technologies, concepts and ideas of
-            Web3 will be used by a billion people in a decade.
+            A community of like minded people from different backgrounds jointly
+            building and investing in the Web3 ecosystem
           </Typography>
         </Box>
-        <Button variant="gradient" width="180px" marginBottom={2}>
+        <Button width="180px" marginBottom={2} variant="gradient">
           <Link
             href={`/joinus`}
             color="#ffffff"

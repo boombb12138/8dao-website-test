@@ -100,6 +100,7 @@ const Header = () => {
       height={{ md: '128px', sm: '120px', xs: '120px' }}
       maxWidth="1216px"
       marginX={{ lg: 'auto', md: '20px', xs: '20px' }}
+      bgcolor="black"
     >
       <Box
         onClick={() => {
@@ -111,23 +112,15 @@ const Header = () => {
         <Box
           width={{ md: '120px', sm: '120px', xs: '80px' }}
           component={'img'}
-          src={'/icons/lxdao-logo.svg'}
+          src={'/icons/8DAO.png'}
         />
       </Box>
-      <Box
+      {/* <Box
         gap={4}
         display={{ md: 'flex', sm: 'none', xs: 'none' }}
         fontSize={2}
         lineHeight={3}
       >
-        <Typography
-          sx={{ cursor: 'pointer' }}
-          onClick={() => {
-            router.push('/projects');
-          }}
-        >
-          Projects
-        </Typography>
         <Typography
           sx={{ cursor: 'pointer' }}
           onClick={() => {
@@ -190,7 +183,7 @@ const Header = () => {
             </MenuItem>
           </Menu>
         </Box>
-      </Box>
+      </Box> */}
       <ConnectWalletButton />
       <MenuIcon
         sx={{

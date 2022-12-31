@@ -21,24 +21,20 @@ export default function Layout({ children, title, description }) {
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
         <link rel="icon" href="/icons/favicon.png" />
-        <title>
-          {title ||
-            'LXDAO - Bringing together buidlers to buidl and maintain &quot;LX&quot; projects for Web3, in a sustainable manner.'}
-        </title>
+        <title>{title || '8DAO – A WEB3 COMMUNITY'}</title>
         <meta
           name="description"
-          content="LXDAO is an R&amp;D-focused DAO in Web3.
-Our mission: Bringing together buidlers to buidl and maintain LX projects for Web3, in a sustainable manner."
+          content="8DAO - A community of like minded people from different backgrounds jointly building and investing in the Web3 ecosystem"
         />
         <meta property="og:locale" content="en_US" />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="/images/logo.svg" />
-        <meta property="og:title" content={title || 'LXDAO Official Website'} />
+        <meta property="og:image" content="/icons/8DAO.png" />
+        <meta property="og:title" content={title || '8DAO builder Website'} />
         <meta
           property="og:description"
           content={
             description ||
-            'LXDAO is an R&D-focused DAO in Web3, bringing together buidlers to buidl and maintain "LX" projects for Web3, in a sustainable manner.'
+            '8DAO - A community of like minded people from different backgrounds jointly building and investing in the Web3 ecosystem.'
           }
         />
         <meta property="og:url" content="https://lxdao.io/" />
@@ -67,8 +63,8 @@ Our mission: Bringing together buidlers to buidl and maintain LX projects for We
         />
       </Head>
 
-      <CssBaseline />
-      <Box>
+      <CssBaseline bgcolor="black" />
+      <Box bgcolor="black">
         <Header />
         <Box minHeight={'100vh'}>{children}</Box>
         <Footer />

@@ -3,13 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
 import SectionHero from '@/sections/SectionHomepageHero';
-import SectionMission from '@/sections/SectionMission';
-import SectionWorkSteps from '@/sections/SectionWorkSteps';
-import SectionHomepageProjects from '@/sections/SectionHomepageProjects';
-import SectionBuidlers from '@/sections/SectionBuidlers';
-import SectionWorkingGroup from '@/sections/SectionWorkingGroup';
+// import SectionMission from '@/sections/SectionMission';
+// import SectionWorkSteps from '@/sections/SectionWorkSteps';
+// import SectionHomepageProjects from '@/sections/SectionHomepageProjects';
+// import SectionBuidlers from '@/sections/SectionBuidlers';
+// import SectionWorkingGroup from '@/sections/SectionWorkingGroup';
 // import SectionActivities from '@/sections/SectionActivities';
-import SectionPartners from '@/sections/SectionPartners';
+// import SectionPartners from '@/sections/SectionPartners';
 
 import { scrollToSection } from '@/utils/utility';
 import API from '@/common/API';
@@ -65,16 +65,16 @@ export default function Home() {
   return (
     <Layout>
       <SectionHero />
-      <SectionMission
+      {/* <SectionMission
         projectAmount={projects.length}
         buidlerAmount={buidlers.length}
-      />
-      <SectionWorkSteps projects={latest3Projects} />
-      <SectionHomepageProjects projects={projects} />
-      <SectionBuidlers buidlers={buidlers} />
-      <SectionWorkingGroup />
+      /> */}
+      {/* <SectionWorkSteps projects={latest3Projects} /> */}
+      {/* <SectionHomepageProjects projects={projects} /> */}
+      {/* <SectionBuidlers buidlers={buidlers} /> */}
+      {/* <SectionWorkingGroup /> */}
       {/* <SectionActivities /> */}
-      <SectionPartners />
+      {/* <SectionPartners /> */}
     </Layout>
   );
 }

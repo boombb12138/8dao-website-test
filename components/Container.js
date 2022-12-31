@@ -9,6 +9,7 @@ const Container = ({ children, minHeight, ...rest }) => (
     boxSizing="border-box"
     marginX={{ lg: 'auto', md: '20px', xs: '20px' }}
     {...rest}
+    bgcolor="black"
   >
     {children}
   </Box>

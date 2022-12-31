@@ -71,10 +71,10 @@ const NavList = ({ title, items }) => (
 );
 
 const Footer = () => {
-  const theme = useTheme();
+  // const theme = useTheme();
   return (
     <Box sx={{ background: '#F1F1F1' }} width="100%">
-      <Container paddingY={{ md: '112px', xs: '44px' }} margin="0 auto">
+      {/* <Container paddingY={{ md: '112px', xs: '44px' }} margin="0 auto">
         <Box
           display="flex"
           flexDirection={{ lg: 'row', md: 'column', xs: 'column' }}
@@ -158,7 +158,7 @@ const Footer = () => {
             </SignupFormWrapper>
           </Box>
         </Box>
-      </Container>
+      </Container> */}
     </Box>
   );
 };
