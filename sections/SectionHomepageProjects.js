@@ -12,7 +12,7 @@ const SectionHomePageProjects = ({ projects }) => {
           variant="h2"
           lineHeight="44px"
           fontWeight={600}
-          letterSpacing="-0.02em"
+          letterSpacing="-0.02em" //设置文本字符的间距
           maxWidth="1216px"
           marginX={{ lg: 'auto', md: '20px', xs: '20px' }}
           marginBottom={3}

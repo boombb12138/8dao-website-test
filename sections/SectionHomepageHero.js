@@ -16,12 +16,13 @@ const textColorGradient = keyframes`
 const HightlightText = styled.span`
   background-size: 400% 400%;
   background-image: linear-gradient(to right, #366eff, #23e5ff, #ff7fdb);
-  -webkit-background-clip: text;
+  -webkit-background-clip: text; //将元素的背景限制在文字中
   animation: ${textColorGradient} 10s ease infinite;
   color: transparent;
   font-size: 98px;
   line-height: 100px;
   font-weight: 700;
+  /* 响应式布局 当屏幕小于600px时 字体大小为3.5625rem  */
   @media screen and (max-width: 900px) {
     font-size: 4.902rem;
     line-height: 1.02;

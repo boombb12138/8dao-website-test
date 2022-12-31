@@ -224,6 +224,7 @@ export default function Home() {
     params.push('page=' + (currentPage || current));
     params.push('per_page=9');
     query += params.join('&');
+    // 将表单的3个筛选条件推到 params数组中 再转为字符串拼贴到query
 
     if (!isAddMore) {
       setLoading(true);
@@ -231,7 +232,8 @@ export default function Home() {
       setLoadingMore(true);
     }
     try {
-      const res = await API.get(query);
+      // 发送网络请求
+      const res = await API.get(query); //API就是axios 多了默认的baseURL和header
       const result = res.data;
       if (result.status !== 'SUCCESS') {
         // error todo Muxin add common alert, wang teng design

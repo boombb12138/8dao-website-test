@@ -45,8 +45,10 @@ export const WorkDetailItem = ({ type, data, ...rest }) => {
               wordWrap: 'break-word',
             }}
           >
+            {/* 提案名称 */}
             {data?.title}
           </Typography>
+          {/* / 这里为什么有3个box 因为有3个选项 */}
           <Box display="flex" gap={2}>
             <Box display="flex" gap="3px">
               <Typography
@@ -55,6 +57,7 @@ export const WorkDetailItem = ({ type, data, ...rest }) => {
                 fontWeight={400}
                 color="#666F85"
               >
+                {/* //todo 这一段的作用   */}
                 {type === 'idea' ? 'Views' : data?.choices[0]}
               </Typography>
               <Typography
@@ -201,6 +204,7 @@ const WorkStep = ({
         justifyContent="center"
         width={{ lg: '50%', md: '100%', xs: '100%' }}
         height="100vh"
+        //todo 粘性定位sticky
         position={{ lg: 'relative', md: 'sticky', xs: 'sticky' }}
         top={0}
         sx={{ backgroundColor: leftBgColor }}
@@ -257,6 +261,7 @@ const SectionWorkSteps = ({ projects }) => {
       });
   }, []);
 
+  // 拿到proposals数据
   useEffect(async () => {
     const result = await request(SNAPSHOTURL, queryProposals);
     const latest3Result = result.proposals.slice(0, 3);
