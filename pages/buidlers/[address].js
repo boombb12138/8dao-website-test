@@ -50,6 +50,7 @@ import { convertIpfsGateway, groupBy, stringCut } from '@/utils/utility';
 import LXButton from '@/components/Button';
 import WorkingGroupCard from '@/components/WorkingGroupCard';
 import { BuidlerCard } from '../buidlers';
+import MemberTier from '@/components/MemberTier';
 
 function totalLXPoints(record) {
   if (!record.lxPoints || !record.lxPoints.length) {
@@ -623,6 +624,14 @@ function BuidlerDetails(props) {
                     })}
                   </Box>
                 </Grid>
+              )}
+              {record.skills.length > 0 && (
+                <Box marginTop={2}>
+                  <Box display="flex" flexWrap="wrap">
+                    <MemberTier skills={record.skills} />
+                    {/* //mark  成员等级字段待更新*/}
+                  </Box>
+                </Box>
               )}
               {record.contacts && (
                 <Box

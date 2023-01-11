@@ -20,6 +20,7 @@ import Container from '@/components/Container';
 import API from '@/common/API';
 import Tag from '@/components/Tag';
 import Skills from '@/components/Skills';
+import MemberTier from '@/components/MemberTier';
 import BuidlerContacts from '@/components/BuidlerContacts';
 import Button from '@/components/Button';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
@@ -164,54 +165,22 @@ export function BuidlerCard(props) {
             </Box>
           </Box>
         )}
-        {!simpleMode &&
-          record.projects.filter((project) => project.status !== 'PENDING')
-            .length > 0 && (
-            <Box marginTop={2}>
-              <Typography
-                color="#fff"
-                fontWeight="600"
-                marginBottom={2}
-                variant="body1"
-              >
-                Projects
-              </Typography>
-              <Box
-                display="flex"
-                gap="10px"
-                flexWrap="noWrap"
-                justifyContent="flex-start"
-                overflow="hidden"
-              >
-                {record.projects
-                  .filter((project) => project.status !== 'PENDING')
-                  .map((project, index) => (
-                    <Link
-                      key={index}
-                      href={`/projects/${project?.project?.number}`}
-                    >
-                      <Box
-                        key={project.id}
-                        width={60}
-                        height={60}
-                        sx={{
-                          border: '0.5px solid #D0D5DD',
-                          borderRadius: '2px',
-                        }}
-                      >
-                        <img
-                          style={{ display: 'block', width: '100%' }}
-                          src={
-                            project.project?.logo || '/images/placeholder.jpeg'
-                          }
-                          alt=""
-                        />
-                      </Box>
-                    </Link>
-                  ))}
-              </Box>
+        {!simpleMode && skills.length > 0 && (
+          <Box marginTop={2}>
+            <Typography
+              color="#fff"
+              fontWeight="600"
+              marginBottom={1}
+              variant="body1"
+            >
+              Member Tier
+            </Typography>
+            <Box display="flex" flexWrap="wrap">
+              <MemberTier skills={skills} />
+              {/* //mark  成员等级字段待更新*/}
             </Box>
-          )}
+          </Box>
+        )}
       </Link>
     </Box>
   );
@@ -262,7 +231,7 @@ export default function Home() {
     currentPage = 0,
     isAddMore = false
   ) => {
-    let query = `/buidler?`;
+    let query = `/buidler?`; //mark 这里修改为member就可以请求到数据了吗
     let params = [];
     const trimmedSearch = search.trim();
     const trimmedRole = role === 'All' ? '' : role.trim();
@@ -287,11 +256,11 @@ export default function Home() {
       setLoadingMore(true);
     }
     try {
+      // mark record就是这儿来的
       // 发送网络请求
       const res = await API.get(query); //API就是axios 多了默认的baseURL和header
       const result = res.data;
       if (result.status !== 'SUCCESS') {
-        // error todo Muxin add common alert, wang teng design
         return;
       }
       const records = result.data;
