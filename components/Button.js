@@ -15,7 +15,7 @@ const Button = ({ variant, children, ...rest }) => (
       },
       color: variant === 'outlined' ? rest.color || '#000000' : '#ffffff',
       borderRadius: '6px',
-      border: variant === 'outlined' ? '1px solid #D0D5DD' : 'none',
+      border: variant === 'outlined' ? '1px solid #fff' : 'none',
       outline: 'none',
       padding: '12px 20px',
       fontSize: '16px',

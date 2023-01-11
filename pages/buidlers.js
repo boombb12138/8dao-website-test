@@ -1,6 +1,17 @@
 /* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
-import { Typography, Box, Grid, Link, CircularProgress } from '@mui/material';
+import {
+  Typography,
+  Box,
+  Grid,
+  Link,
+  CircularProgress,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 import Layout from '@/components/Layout';
 import SingleSelect from '@/components/Select';
@@ -15,6 +26,13 @@ import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
 import { convertIpfsGateway } from '@/utils/utility';
 import { makeStyles } from '@mui/styles';
+import LXButton from '@/components/Button';
+import ProfileForm from '@/components/ProfileForm';
+import _ from 'lodash';
+
+import useBuidler from '@/components/useBuidler';
+import { useRouter } from 'next/router';
+import showMessage from '@/components/showMessage';
 
 const useStyles = makeStyles(() => ({
   searchInputWrapper: {
@@ -223,6 +241,9 @@ let skillNames = [
 ];
 
 export default function Home() {
+  const router = useRouter();
+  const address = router.query.address;
+
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [list, setList] = useState([]);
@@ -231,6 +252,8 @@ export default function Home() {
   const [skill, setSkill] = useState('');
   const [current, setCurrent] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [visible, setVisible] = useState(false);
+  const [record, error, refresh] = useBuidler(address);
 
   const searchList = async (
     search = '',
@@ -290,7 +313,35 @@ export default function Home() {
     }
   };
 
-  // todo Muxin add pagination later with many buidlers
+  const saveProfileHandler = async (newMetaData) => {
+    setUpdating(true);
+    const userProfile = {
+      ...newMetaData,
+      role: record.role.length === 0 ? ['Buidler'] : record.role,
+      image: `${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`,
+    };
+    try {
+      // todo axios的put请求？
+      // mark 将Profile Details存储起来
+      const response = await API.put(`/buidler/${address}`, {
+        metaData: userProfile,
+      });
+      const result = response?.data;
+      if (result.status !== 'SUCCESS') {
+        throw new Error(result.message);
+      }
+      setVisible(false);
+      props.refresh();
+    } catch (err) {
+      showMessage({
+        type: 'error',
+        title: 'Failed to update profile',
+        body: err.message,
+      });
+    }
+    setUpdating(false);
+  };
+
   useEffect(() => {
     searchList();
   }, []);
@@ -325,17 +376,16 @@ export default function Home() {
               Welcome to Join Us!
             </Typography>
           </Box>
-          <Button variant="gradient" width="200px" marginBottom={2}>
-            <Link
-              href={`/joinus`}
-              color="#ffffff"
-              sx={{
-                textDecoration: 'none',
-              }}
-            >
-              JOIN US
-            </Link>
-          </Button>
+          {/* {address === 管理员地址 ?  */}(
+          <LXButton
+            onClick={() => {
+              setVisible(true);
+            }}
+            varient="outlined"
+          >
+            Add Member
+          </LXButton>
+          ){/* : null} */}
         </Box>
         <Grid
           marginTop={10}
@@ -444,6 +494,45 @@ export default function Home() {
             </Box>
           )}
         </Box>
+        <Dialog
+          fullWidth={true}
+          maxWidth={'sm'}
+          onClose={(event, reason) => {
+            if (reason && reason == 'backdropClick') return;
+            setVisible(false);
+          }}
+          open={visible}
+        >
+          <Box
+            onClick={() => {
+              setVisible(false);
+            }}
+            sx={{ cursor: 'pointer' }}
+            position="absolute"
+            top="16px"
+            right="16px"
+          >
+            <CloseIcon />
+          </Box>
+          <DialogTitle>Profile Details</DialogTitle>
+          <DialogContent>
+            {/* _.cloneDeep(value) 深拷贝value */}
+            <ProfileForm
+              value={_.cloneDeep(
+                //_.pick(object, [props]) 创建一个从 object 中选中的属性的对象。
+                _.pick(record, [
+                  'avatar',
+                  'name',
+                  'description',
+                  'skills',
+                  'interests',
+                  'contacts',
+                ])
+              )}
+              saveProfileHandler={saveProfileHandler}
+            />
+          </DialogContent>
+        </Dialog>
       </Container>
     </Layout>
   );

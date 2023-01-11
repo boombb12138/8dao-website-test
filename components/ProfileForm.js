@@ -60,7 +60,6 @@ function ProfileForm(props) {
       );
     }
 
-    // todo add more steps and tips, like uploading to IPFS etc.
     if (props.updating) {
       return (
         <Button variant="contained" size="large" disabled={true}>
@@ -127,6 +126,31 @@ function ProfileForm(props) {
           }}
         />
       </Box>
+
+      <Box marginBottom={2.5}>
+        <Controller
+          name={'Address'}
+          control={control}
+          rules={{ required: true }}
+          render={({ field: { onChange, value } }) => {
+            return (
+              <TextInput
+                required
+                multiline
+                rows={1}
+                placeholder="0x.."
+                fullWidth
+                label="Address"
+                onChange={onChange}
+                value={value}
+                error={!!errors.description}
+                helperText={errors.description ? 'Address is required' : ''}
+              />
+            );
+          }}
+        />
+      </Box>
+
       <Box marginBottom={2.5}>
         <Controller
           name={'description'}
