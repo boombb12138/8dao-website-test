@@ -8,7 +8,6 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 
-import { ConnectWalletButton } from '@/components/ConnectWallet';
 
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
@@ -184,7 +183,7 @@ const Header = () => {
           </Menu>
         </Box>
       </Box> */}
-      <ConnectWalletButton />
+    
       <MenuIcon
         sx={{
           display: { md: 'none', sm: 'block', xs: 'block' },

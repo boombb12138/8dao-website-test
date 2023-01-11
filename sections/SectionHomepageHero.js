@@ -6,6 +6,7 @@ import Button from '@/components/Button';
 import Container from '@/components/Container';
 import CommunityLinkGroup from '@/components/CommunityLinkGroup';
 // import ActivityNotification from '@/components/ActivityNotification';
+import { ConnectWalletButton } from '@/components/ConnectWallet';
 
 const textColorGradient = keyframes`
   0%{background-position:0% 50%}
@@ -36,7 +37,7 @@ const HightlightText = styled.span`
 const SectionHomepageHero = () => {
   const Title = () => {
     return (
-      <Box marginTop="112px">
+      <Box >
         <Box>
           <Typography variant="h1">8DAO is a</Typography>
           <HightlightText>MEMBERSHIP-BASED</HightlightText>
@@ -68,31 +69,17 @@ const SectionHomepageHero = () => {
         <Title />
         <Box display={{ md: 'block', sm: 'none', xs: 'none' }}>
           <Typography variant="subtitle1" lineHeight="36px" color="#667085">
-            A community of like minded people from different backgrounds jointly
-            building and investing in the Web3 ecosystem
+          In order to view the member list, you need to connect wallet.
           </Typography>
         </Box>
         <Box display={{ md: 'none', sm: 'block', xs: 'block' }}>
           <Typography variant="subtitle1" lineHeight="36px" color="#667085">
-            A community of like minded people from different backgrounds jointly
-            building and investing in the Web3 ecosystem
+         In order to view the member list, you need to connect wallet.
           </Typography>
         </Box>
-        <Button
-          width="180px"
-          marginBottom={2}
-          variant="outlined"
-          aria-label="outlined button group"
-        >
-          <Link
-            href={`/joinus`}
-            sx={{
-              textDecoration: 'none',
-            }}
-          >
-            JOIN US
-          </Link>
-        </Button>
+        
+        <ConnectWalletButton />
+        
         <CommunityLinkGroup />
         {/* <ActivityNotification /> */}
       </Box>
