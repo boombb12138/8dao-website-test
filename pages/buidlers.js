@@ -39,9 +39,6 @@ const useStyles = makeStyles(() => ({
   searchInputWrapper: {
     cursor: 'pointer',
     color: '#fff',
-    '& .searchInput': {
-      border: '#fff',
-    },
     '& .memberAvatar': {
       width: '80px',
       height: '80px',
@@ -345,16 +342,15 @@ export default function Home() {
               Welcome to Join Us!
             </Typography>
           </Box>
-          {/* {address === 管理员地址 ?  */}(
-          <LXButton
+          {/* {address === 管理员地址 ?  */}
+          <Button
+            variant="outlined"
             onClick={() => {
               setVisible(true);
             }}
-            varient="outlined"
           >
             Add Member
-          </LXButton>
-          ){/* : null} */}
+          </Button>
         </Box>
         <Grid
           marginTop={10}
@@ -372,7 +368,14 @@ export default function Home() {
               }}
               label="Search"
               placeholder="Search buidlers"
-              className="searchInput"
+              sx={{
+                '& .MuiInputBase-root': {
+                  border: '#fff',
+                  '&:hover': {
+                    border: '#fff',
+                  },
+                },
+              }}
             />
           </Grid>
 

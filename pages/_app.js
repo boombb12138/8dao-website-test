@@ -17,7 +17,7 @@ import '@/common/style.css';
 // eslint-disable-next-line react/prop-types
 function MyApp({ Component, pageProps }) {
   return (
-    <ThemeProvider theme={getTheme('light')}>
+    <ThemeProvider theme={getTheme('dark')}>
       <AlertProvider>
         <WagmiConfig client={wagmiClient}>
           <RainbowKitProvider
