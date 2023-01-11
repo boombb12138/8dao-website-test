@@ -78,10 +78,14 @@ const SectionHomepageHero = () => {
             building and investing in the Web3 ecosystem
           </Typography>
         </Box>
-        <Button width="180px" marginBottom={2} variant="gradient">
+        <Button
+          width="180px"
+          marginBottom={2}
+          variant="outlined"
+          aria-label="outlined button group"
+        >
           <Link
             href={`/joinus`}
-            color="#ffffff"
             sx={{
               textDecoration: 'none',
             }}

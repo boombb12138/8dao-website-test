@@ -14,6 +14,38 @@ import Button from '@/components/Button';
 import Masonry, { ResponsiveMasonry } from 'react-responsive-masonry';
 
 import { convertIpfsGateway } from '@/utils/utility';
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles(() => ({
+  searchInputWrapper: {
+    cursor: 'pointer',
+    color: '#fff',
+    '& .searchInput': {
+      border: '#fff',
+    },
+    '& .memberAvatar': {
+      width: '80px',
+      height: '80px',
+      transition: 'width 0.1s, height 0.1s linear',
+    },
+    '& .memberTwitter': {
+      display: 'none',
+    },
+    '&:hover': {
+      '& .memberInfoWrapper': {
+        visibility: 'visible',
+        opacity: 1,
+      },
+      '& .memberAvatar': {
+        width: '50px',
+        height: '50px',
+      },
+      '& .memberTwitter': {
+        display: 'block',
+      },
+    },
+  },
+}));
 
 export function BuidlerCard(props) {
   const record = props.record;
@@ -102,7 +134,7 @@ export function BuidlerCard(props) {
         {!simpleMode && skills.length > 0 && (
           <Box marginTop={2}>
             <Typography
-              color="#101828"
+              color="#fff"
               fontWeight="600"
               marginBottom={1}
               variant="body1"
@@ -119,7 +151,7 @@ export function BuidlerCard(props) {
             .length > 0 && (
             <Box marginTop={2}>
               <Typography
-                color="#101828"
+                color="#fff"
                 fontWeight="600"
                 marginBottom={2}
                 variant="body1"
@@ -262,6 +294,7 @@ export default function Home() {
   useEffect(() => {
     searchList();
   }, []);
+  const styles = useStyles();
 
   return (
     <Layout title="LXDAO Buidlers | LXDAO">
@@ -278,9 +311,9 @@ export default function Home() {
               fontSize="70px"
               fontWeight={600}
               lineHeight="70px"
-              color="#101828"
+              color="#f0f0f0"
             >
-              LXDAO Buidlers
+              8DAO Members
             </Typography>
             <Typography
               variant="subtitle1"
@@ -289,8 +322,7 @@ export default function Home() {
               color="#667085"
               marginTop={4}
             >
-              Welcome to Join Us, let's buidl more valuable Web3 products
-              together!
+              Welcome to Join Us!
             </Typography>
           </Box>
           <Button variant="gradient" width="200px" marginBottom={2}>
@@ -305,7 +337,12 @@ export default function Home() {
             </Link>
           </Button>
         </Box>
-        <Grid marginTop={10} container spacing={2}>
+        <Grid
+          marginTop={10}
+          container
+          spacing={2}
+          className={styles.searchInputWrapper}
+        >
           <Grid item xs={4}>
             <DebouncedInput
               value={search}
@@ -316,8 +353,10 @@ export default function Home() {
               }}
               label="Search"
               placeholder="Search buidlers"
+              className="searchInput"
             />
           </Grid>
+
           <Grid item xs={4}>
             <SingleSelect
               value={role}

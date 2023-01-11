@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Link, Box } from '@mui/material';
 import { getDefaultWallets, ConnectButton } from '@rainbow-me/rainbowkit';
 import {
@@ -9,9 +9,12 @@ import {
   useAccount,
   useSignMessage,
   useDisconnect,
+  useSigner,
+  useContract,
 } from 'wagmi';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
+// import { Contract } from 'ethers';
 
 import API, { refreshAPIToken } from '@/common/API';
 import {
@@ -22,6 +25,12 @@ import {
 import showMessage from '@/components/showMessage';
 
 import '@rainbow-me/rainbowkit/styles.css';
+import { useRouter } from 'next/router';
+
+// import {
+//   TOKEN_CONTRACT_ABI,
+//   TOKEN_CONTRACT_ADDRESS,
+// } from '../common/constants';
 
 const { chains, provider } = configureChains(
   [chain.mainnet, chain.goerli],
@@ -29,7 +38,7 @@ const { chains, provider } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
-  appName: 'LXDAO Official Website',
+  appName: '8DAO Official Website',
   chains,
 });
 
@@ -44,14 +53,40 @@ const ConnectWalletButton = () => {
   const { disconnect } = useDisconnect();
   const { data: signature, signMessageAsync } = useSignMessage();
   const addressInfo = useRef({ address });
+  const [tokenBalance, setTokenBalance] = useState(300);
+  const router = useRouter();
+
+  // const { data: signer } = useSigner();
+
+  // const tokenContract = useContract({
+  //   address: TOKEN_CONTRACT_ADDRESS,
+  //   abi: TOKEN_CONTRACT_ABI,
+  //   // signerOrProvider: signature,
+  // });
 
   useEffect(() => {
     (async () => {
       if (isConnected) {
-        const currentAccessToken = getLocalStorage('accessToken');
-        if (address && !currentAccessToken) {
-          await handleNonce(address);
-        }
+        // const balance = await tokenContract.balanceOf(address);
+        // setTokenBalance(parseInt(balance.toString()));
+        // console.log(tokenBalance);
+        // const currentAccessToken = getLocalStorage('accessToken');
+        // if (address && !currentAccessToken) {
+        //   await handleNonce(address);
+        // }
+        // await handleNonce(address);
+        // if (tokenBalance < 200) {
+        //   showMessage({
+        //     type: 'error',
+        //     title: 'You dont have enough 8DAO Token',
+        //     body: (
+        //       <Box>In order to login, You need at least 200 8DAO Token.</Box>
+        //     ),
+        //   });
+        //   disconnect();
+        // } else {
+        router.push('/buidlers');
+        // }
       }
     })();
   }, [isConnected]);
@@ -90,21 +125,14 @@ const ConnectWalletButton = () => {
 
   const handleNonce = async () => {
     try {
-      const nonceRes = await API.get(`/buidler/${address}/nonce`);
-      const signatureMessage = nonceRes.data?.data?.signature_message;
-      const nonce = nonceRes.data?.data?.nonce;
-      // no builder record in DB
-      if (!nonce) {
+      console.log(tokenBalance);
+      if (tokenBalance < 2) {
         showMessage({
           type: 'error',
-          title: 'Cannot find your LXDAO builder record',
+          title: 'You dont have enough 8DAO Token',
           body: (
             <Box>
-              It seems you are not a LXDAO buidler, welcome to{' '}
-              <Link marginBottom={2} target="_blank" href={`/joinus`}>
-                join us
-              </Link>
-              . Let&apos;s buidler a better Web3 together!
+              You need at least 200 8DAO Token. Please get more to login.
             </Box>
           ),
         });
@@ -146,14 +174,16 @@ const ConnectWalletButton = () => {
   };
 
   return (
-    <ConnectButton
-      showBalance={false}
-      chainStatus="none"
-      accountStatus={{
-        smallScreen: 'avatar',
-        largeScreen: 'full',
-      }}
-    />
+    <div>
+      <ConnectButton
+        showBalance={false}
+        chainStatus="none"
+        accountStatus={{
+          smallScreen: 'avatar',
+          largeScreen: 'full',
+        }}
+      />
+    </div>
   );
 };
 
