@@ -592,7 +592,7 @@ function BuidlerDetails(props) {
                 variant="h5"
                 fontWeight="500"
                 textAlign="center"
-                color="#000"
+                color="#fff"
                 marginTop={3}
                 marginBottom={1}
               >
@@ -625,14 +625,7 @@ function BuidlerDetails(props) {
                   </Box>
                 </Grid>
               )}
-              {record.skills.length > 0 && (
-                <Box marginTop={2}>
-                  <Box display="flex" flexWrap="wrap">
-                    <MemberTier skills={record.skills} />
-                    {/* //mark  成员等级字段待更新*/}
-                  </Box>
-                </Box>
-              )}
+
               {record.contacts && (
                 <Box
                   marginTop={2}
@@ -783,173 +776,10 @@ function BuidlerDetails(props) {
               </Box>
             </Box>
           </Box>
-          {record.buddies?.length > 0 && (
-            <Link
-              target="_blank"
-              href={`/buidlers/${record.buddies[0].address}`}
-              sx={{
-                textDecoration: 'none',
-              }}
-            >
-              <Box
-                marginTop={3}
-                border="0.5px solid #D0D5DD"
-                borderRadius="6px"
-                display="flex"
-                justifyContent="space-between"
-                padding="20px 24px"
-              >
-                <Box display="flex" alignItems="center">
-                  Buddy
-                </Box>
-
-                <Box
-                  width="80px"
-                  height="80px"
-                  border="0.5px solid #D0D5DD"
-                  borderRadius="6px"
-                  overflow="hidden"
-                >
-                  <img
-                    style={{ display: 'block', width: 80, height: 80 }}
-                    src={record.buddies[0].avatar || '/images/placeholder.jpeg'}
-                    alt=""
-                  />
-                </Box>
-              </Box>
-            </Link>
-          )}
-          {record.status === 'ACTIVE' ? (
-            <Link
-              target="_blank"
-              href={`https://opensea.io/collection/lxdaobuidler`}
-              sx={{
-                textDecoration: 'none',
-              }}
-            >
-              <Box
-                marginTop={2}
-                width={{ lg: '300px', sm: 'auto', xs: '350px' }}
-                display="flex"
-                justifyContent="center"
-              >
-                <img
-                  crossOrigin="anonymous"
-                  style={{
-                    display: 'block',
-                    maxWidth: '100%',
-                  }}
-                  src={`${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`}
-                  alt=""
-                />
-              </Box>
-            </Link>
-          ) : null}
         </Box>
         {/* right senction */}
         <Box boxSizing="border-box" flex="1">
-          <Box display="flex" flexDirection="column">
-            <Accordion
-              onChange={handleAccordionOnChange}
-              sx={{
-                '&.Mui-expanded': {
-                  minHeight: { md: 128, sm: 200 },
-                },
-                '&.MuiPaper-root': {
-                  border: '0.5px solid #D0D5DD',
-                  boxShadow: 'none',
-                },
-              }}
-            >
-              <AccordionSummary
-                height={{ md: '128px', sm: '200px' }}
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-                sx={{
-                  '&.MuiAccordionSummary-root': {
-                    height: { sm: '128px !important', xs: '200px !important' },
-                    borderRadius: '6px',
-                    '.MuiAccordionSummary-expandIconWrapper': {
-                      marginTop: { sm: 0, xs: '84px' },
-                      display: record?.lxPoints.length ? 'block' : 'none',
-                    },
-                  },
-                }}
-              >
-                <Box
-                  width="100%"
-                  display="flex"
-                  alignItems={{ xs: 'flex-start', md: 'center' }}
-                  justifyContent="space-between"
-                  flexDirection={{ xs: 'column', md: 'row' }}
-                >
-                  <Box>
-                    <Typography
-                      fontWeight="600"
-                      variant="body1"
-                      color="#101828"
-                    >
-                      All Remuneration
-                    </Typography>
-                    <Typography
-                      marginTop={1}
-                      fontWeight="600"
-                      variant="h5"
-                      color="#36AFF9"
-                    >
-                      {totalLXPoints(record)}
-                    </Typography>
-                  </Box>
-                  <Box
-                    textAlign={{ xs: 'right' }}
-                    width={{ xs: '100%', md: 'auto' }}
-                    paddingTop={{ xs: '24px', md: 0 }}
-                  >
-                    <Typography
-                      fontWeight="500"
-                      variant="body1"
-                      color="#0D1320"
-                    >
-                      {record?.lxPoints.length > 0
-                        ? accordionOpen
-                          ? 'Put Away'
-                          : 'Record List'
-                        : null}
-                    </Typography>
-                  </Box>
-                </Box>
-              </AccordionSummary>
-              <AccordionDetails
-                sx={{
-                  '&.MuiAccordionDetails-root': {
-                    height: '235px !important',
-                    padding: { sm: '8px 32px 32px 32px', xs: '8px' },
-                    overflowY: 'auto',
-                    overflowX:
-                      record?.lxPoints?.length === 0 ? 'hidden' : 'auto',
-                    '&::-webkit-scrollbar': {
-                      width: '10px',
-                      height: '10px',
-                      background: 'transparent',
-                    },
-                    '&::-webkit-scrollbar-thumb': {
-                      borderRadius: '10px',
-                      background: '#dfdfdf',
-                    },
-                    '&::scrollbar-track': {
-                      borderRadius: 0,
-                      background: '#dfdfdf',
-                    },
-                  },
-                }}
-              >
-                <LXPointsTable maxHeight="235px" points={record.lxPoints} />
-              </AccordionDetails>
-            </Accordion>
-          </Box>
-
-          <Box flex="1 1" marginTop={3}>
+          <Box flex="1 1">
             <Box
               sx={{
                 display: 'grid',
@@ -1049,8 +879,8 @@ function BuidlerDetails(props) {
                   {record.interests.map((item) => {
                     return (
                       <Tag
-                        background="rgba(255,184,0,0.1)"
-                        color="#FFB800"
+                        background="#cd853f"
+                        color="#fff8dc"
                         key={item}
                         text={item}
                       />
@@ -1060,148 +890,48 @@ function BuidlerDetails(props) {
               </Box>
             </Box>
           </Box>
-
-          <Box marginTop={3}>
-            <Box>
-              <Typography
-                color="#101828"
-                fontWeight="600"
-                variant="body1"
-                marginBottom={2}
-              >
-                Project
-              </Typography>
-            </Box>
-            <Box display="flex" marginTop={2}>
-              {projects.length ? (
-                <Grid container spacing={4}>
-                  {projects.map((project) => {
-                    return (
-                      <Grid item xs={12} md={6} key={project.id}>
-                        <Project data={project} />
-                      </Grid>
-                    );
-                  })}
-                </Grid>
-              ) : (
-                <Box
-                  display="flex"
-                  flexDirection="column"
-                  width="100%"
-                  height="148px"
-                  alignItems="center"
-                  border="0.5px solid #D0D5DD"
-                  borderRadius="6px"
-                  padding={2}
-                >
-                  <Typography
-                    marginTop={{ xs: 0, sm: 2 }}
-                    marginBottom={{ xs: '16px', sm: '21px' }}
-                    color="#D0D5DD"
-                    variant="body1"
-                    fontWeight="400"
-                  >
-                    You have not participated in the project, Go and choose one
-                    to join.
-                  </Typography>
-                  <LXButton size="small" variant="outlined">
-                    <Link
-                      href={`/projects`}
-                      target="_blank"
-                      sx={{
-                        textDecoration: 'none',
-                      }}
-                    >
-                      View Product List
-                    </Link>
-                  </LXButton>
-                </Box>
-              )}
-            </Box>
-          </Box>
-
-          <Box marginTop={3} marginBottom={3}>
-            <Box>
-              <Typography
-                color="#101828"
-                fontWeight="600"
-                variant="body1"
-                marginBottom={2}
-              >
-                Working Group
-              </Typography>
-            </Box>
-            <Box display="flex" marginTop={2}>
-              {record?.workingGroups?.length ? (
-                <Box width="100%">
-                  <Grid container spacing={3}>
-                    {record?.workingGroups?.length > 0 &&
-                      record?.workingGroups?.map((group, index) => {
-                        return (
-                          <WorkingGroupCard hasBorder key={index} {...group} />
-                        );
-                      })}
-                  </Grid>
-                </Box>
-              ) : (
-                <Box
-                  display="flex"
-                  flexDirection="column"
-                  width="100%"
-                  height="148px"
-                  alignItems="center"
-                  border="0.5px solid #D0D5DD"
-                  borderRadius="6px"
-                  padding={2}
-                >
-                  <Typography
-                    marginTop={{ xs: 0, sm: 2 }}
-                    marginBottom={{ xs: '16px', sm: '21px' }}
-                    color="#D0D5DD"
-                    variant="body1"
-                    fontWeight="400"
-                  >
-                    You haven&apos;t joined the workgroup, go and choose one to
-                    join
-                  </Typography>
-                  <LXButton size="small" variant="outlined">
-                    <Link
-                      href={`https://lxdao.notion.site/95fde886aef24c9ca63b8bae95fa8456`}
-                      target="_blank"
-                      sx={{
-                        textDecoration: 'none',
-                      }}
-                    >
-                      View Working Group
-                    </Link>
-                  </LXButton>
-                </Box>
-              )}
-            </Box>
-          </Box>
-          {mates && mates.length > 0 && (
-            <Box marginTop={3} marginBottom={3}>
+          {record.skills.length > 0 && (
+            <Box marginTop={2}>
               <Box>
                 <Typography
-                  color="#101828"
                   fontWeight="600"
                   variant="body1"
                   marginBottom={2}
+                  display="inline-block"
                 >
-                  My Buddies
+                  MemberTier
                 </Typography>
-              </Box>
-              <Box display="flex" marginTop={2}>
-                <Grid container spacing={2}>
-                  {mates.map((mate) => (
-                    <Grid key={mate.id} item xs={12} sm={6} lg={4}>
-                      <BuidlerCard simpleMode={true} record={mate} />
-                    </Grid>
-                  ))}
-                </Grid>
+                <MemberTier skills={record.skills} />
+                {/* //mark  成员等级字段待更新*/}
               </Box>
             </Box>
           )}
+          {record.status === 'ACTIVE' ? (
+            <Link
+              target="_blank"
+              href={`https://opensea.io/collection/lxdaobuidler`}
+              sx={{
+                textDecoration: 'none',
+              }}
+            >
+              <Box
+                marginTop={5}
+                width={{ lg: '300px', sm: 'auto', xs: '350px' }}
+                display="flex"
+                justifyContent="center"
+              >
+                <img
+                  crossOrigin="anonymous"
+                  style={{
+                    display: 'block',
+                    maxWidth: '100%',
+                  }}
+                  src={`${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`}
+                  alt=""
+                />
+              </Box>
+            </Link>
+          ) : null}
         </Box>
       </Box>
 

@@ -25,7 +25,7 @@ function CopyText({ copyText, copyTextOriginal }) {
           {copyText}
           <Box
             marginLeft={1}
-            width="20px"
+            width="15px"
             component={'img'}
             src={`/icons/copy.svg`}
             sx={{

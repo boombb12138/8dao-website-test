@@ -116,7 +116,7 @@ export function BuidlerCard(props) {
               sx={{
                 lineHeight: '24px',
                 fontWeight: '500',
-                color: '#000',
+                color: '#ebebeb',
                 textOverflow: 'ellipsis',
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
