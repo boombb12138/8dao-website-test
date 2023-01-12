@@ -116,7 +116,7 @@ function ProfileForm(props) {
                 required
                 fullWidth
                 label="Name"
-                placeholder="Your nick name"
+                placeholder="Nick name"
                 onChange={onChange}
                 value={value}
                 error={!!errors.name}
@@ -222,7 +222,7 @@ function ProfileForm(props) {
                 onChange={(values) => {
                   let lastValue = values.pop();
                   if (lastValue === 'Others') {
-                    lastValue = window.prompt('Please input your interest');
+                    lastValue = window.prompt('Please input the interest');
                   }
                   onChange([...values, lastValue]);
                 }}

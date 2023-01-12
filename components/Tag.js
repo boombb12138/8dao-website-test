@@ -10,8 +10,8 @@ function Tag(props) {
         marginRight: '8px',
         marginBottom: '4px',
         wordBreak: 'break-all',
-        background: props.background || 'rgba(102,111,133,0.1)',
-        color: props.color || '#666F85',
+        background: props.background || 'rgba(255, 255, 255, 0.3)',
+        color: props.color || 'rgba(255, 255, 255, 0.7)',
         fontSize: '14px',
       }}
     >

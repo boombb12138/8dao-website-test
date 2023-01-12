@@ -10,6 +10,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  Pagination,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -30,6 +31,7 @@ import { makeStyles } from '@mui/styles';
 import LXButton from '@/components/Button';
 import ProfileForm from '@/components/ProfileForm';
 import _ from 'lodash';
+import { useContract, useAccount, useSigner } from 'wagmi';
 
 import useBuidler from '@/components/useBuidler';
 import { useRouter } from 'next/router';
@@ -133,7 +135,7 @@ export function BuidlerCard(props) {
               variant="body1"
               sx={{
                 lineHeight: '24px',
-                color: '#666F85',
+                color: 'rgba(255, 255, 255, 0.5)',
               }}
             >
               {record.description}
@@ -206,9 +208,32 @@ let skillNames = [
   'Others',
 ];
 
+function usePagination(data, itemsPerPage) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const maxPage = Math.ceil(data.length / itemsPerPage);
+
+  function currentData() {
+    const begin = (currentPage - 1) * itemsPerPage;
+    const end = begin + itemsPerPage;
+    return data.slice(begin, end);
+  }
+  function next() {
+    setCurrentPage((currentPage) => Math.min(currentPage + 1, maxPage));
+  }
+  function prev() {
+    setCurrentPage((currentPage) => Math.max(currentPage - 1, 1));
+  }
+  function jump(page) {
+    const pageNumber = Math.max(1, page);
+    setCurrentPage(() => Math.min(pageNumber, maxPage));
+  }
+  return { next, prev, jump, currentData, currentPage, maxPage };
+}
+
 export default function Home() {
   const router = useRouter();
   const address = router.query.address;
+  const { addressConnected, isConnected } = useAccount();
 
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -220,7 +245,10 @@ export default function Home() {
   const [hasMore, setHasMore] = useState(true);
   const [visible, setVisible] = useState(false);
   const [record, error, refresh] = useBuidler(address);
+  let [page, setPage] = useState(1);
+  const PER_PAGE = 6;
 
+  console.log('address', address);
   const searchList = async (
     search = '',
     role = '',
@@ -242,6 +270,7 @@ export default function Home() {
     if (trimmedSkill) {
       params.push('skill=' + trimmedSkill);
     }
+    // mark 接口中要有一个字段是能够拿到全部的数据
     params.push('page=' + (currentPage || current));
     params.push('per_page=9');
     query += params.join('&');
@@ -267,7 +296,7 @@ export default function Home() {
         tempList.push(record);
       });
       setHasMore(tempList.length === 9);
-
+      // setList([...list, ...tempList]);
       isAddMore ? setList([...list, ...tempList]) : setList([...tempList]);
     } catch (err) {
       console.error(err);
@@ -308,6 +337,13 @@ export default function Home() {
     setUpdating(false);
   };
 
+  const count = Math.ceil(list.length / PER_PAGE); //页数
+  const _DATA = usePagination(list, PER_PAGE);
+  const handlePaginationChange = async (e, p) => {
+    setPage(p);
+    _DATA.jump(p);
+  };
+
   useEffect(() => {
     searchList();
   }, []);
@@ -342,15 +378,19 @@ export default function Home() {
               Welcome to Join Us!
             </Typography>
           </Box>
-          {/* {address === 管理员地址 ?  */}
+          {/* {addressConnected === '0x1532d98e151028BA6f4241b136c4844002612a30' ? ( */}
           <Button
             variant="outlined"
             onClick={() => {
               setVisible(true);
             }}
+            refresh={() => {
+              refresh();
+            }}
           >
             Add Member
           </Button>
+          {/* ) : null} */}
         </Box>
         <Grid
           marginTop={10}
@@ -431,7 +471,7 @@ export default function Home() {
                 columnsCountBreakPoints={{ 0: 1, 600: 2, 900: 3 }}
               >
                 <Masonry gutter="16px">
-                  {list.map((item) => {
+                  {_DATA.currentData().map((item) => {
                     return (
                       <Grid key={item.id} item xs={12} sm={6} lg={4}>
                         <BuidlerCard key={item.id} record={item} />
@@ -440,8 +480,23 @@ export default function Home() {
                   })}
                 </Masonry>
               </ResponsiveMasonry>
-
               <Box
+                marginTop={{ md: 6, xs: 3 }}
+                display="flex"
+                justifyContent="center"
+                gap={2}
+              >
+                <Pagination
+                  count={count}
+                  size="large"
+                  page={page}
+                  varient="outlined"
+                  shape="rounded"
+                  onChange={handlePaginationChange}
+                />
+              </Box>
+
+              {/* <Box
                 marginTop={{ md: 6, xs: 3 }}
                 display="flex"
                 justifyContent="center"
@@ -462,7 +517,7 @@ export default function Home() {
                     View More
                   </Button>
                 ) : null}
-              </Box>
+              </Box> */}
             </Box>
           )}
         </Box>

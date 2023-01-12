@@ -658,7 +658,12 @@ function BuidlerDetails(props) {
                   />
                 )}
               {createdAt.length === 4 && (
-                <Box paddingTop={3} display="flex" justifyContent="center">
+                <Box
+                  paddingTop={3}
+                  paddingBottom={3}
+                  display="flex"
+                  justifyContent="center"
+                >
                   <Typography>{`Joined ${createdAt[1]} ${createdAt[3]}`}</Typography>
                 </Box>
               )}
@@ -677,7 +682,9 @@ function BuidlerDetails(props) {
                 flexWrap="wrap"
                 gap={1}
               >
-                {address === record.address ? (
+                {/* //mark  增加管理员地址的判断 */}
+                {address === record.address ||
+                address === '0x1532d98e151028BA6f4241b136c4844002612a30' ? (
                   <LXButton
                     onClick={() => {
                       setVisible(true);
