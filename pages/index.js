@@ -10,7 +10,7 @@ import SectionBuidlers from '@/sections/SectionBuidlers';
 // import SectionWorkingGroup from '@/sections/SectionWorkingGroup';
 // import SectionActivities from '@/sections/SectionActivities';
 // import SectionPartners from '@/sections/SectionPartners';
-
+import { Box } from '@mui/material';
 import { scrollToSection } from '@/utils/utility';
 import API from '@/common/API';
 
@@ -64,7 +64,9 @@ export default function Home() {
 
   return (
     <Layout>
-      <SectionHero />
+      <Box bgcolor="black">
+        <SectionHero />
+      </Box>
       {/* <SectionMission
         projectAmount={projects.length}
         buidlerAmount={buidlers.length}

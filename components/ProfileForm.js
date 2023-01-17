@@ -27,7 +27,7 @@ const interestNames = [
 function ProfileForm(props) {
   const values = props.values;
 
-  const saveProfileHandler = props.saveProfileHandler;
+  const addProfileHandler = props.addProfileHandler;
 
   const {
     handleSubmit,
@@ -37,6 +37,7 @@ function ProfileForm(props) {
     defaultValues: {
       avatar: '',
       name: '',
+      address: '',
       description: '',
       skills: [],
       interests: [],
@@ -46,8 +47,8 @@ function ProfileForm(props) {
   });
 
   const onSubmit = (data) => {
-    if (saveProfileHandler) {
-      saveProfileHandler(data);
+    if (addProfileHandler) {
+      addProfileHandler(data);
     }
   };
 

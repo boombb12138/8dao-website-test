@@ -1,7 +1,11 @@
 /* eslint-disable no-undef */
 import React, { useRef, useEffect, useState } from 'react';
-import { Link, Box } from '@mui/material';
-import { getDefaultWallets, ConnectButton } from '@rainbow-me/rainbowkit';
+import { Box } from '@mui/material';
+import {
+  getDefaultWallets,
+  ConnectButton,
+  useConnectModal,
+} from '@rainbow-me/rainbowkit';
 import {
   chain,
   configureChains,
@@ -16,21 +20,21 @@ import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 // import { Contract } from 'ethers';
 
-import API, { refreshAPIToken } from '@/common/API';
-import {
-  setLocalStorage,
-  getLocalStorage,
-  removeLocalStorage,
-} from '@/utils/utility';
+// import API, { refreshAPIToken } from '@/common/API';
+// import {
+//   setLocalStorage,
+//   getLocalStorage,
+//   removeLocalStorage,
+// } from '@/utils/utility';
 import showMessage from '@/components/showMessage';
 
 import '@rainbow-me/rainbowkit/styles.css';
 import { useRouter } from 'next/router';
 
-// import {
-//   TOKEN_CONTRACT_ABI,
-//   TOKEN_CONTRACT_ADDRESS,
-// } from '../common/constants';
+import {
+  TOKEN_CONTRACT_ABI,
+  TOKEN_CONTRACT_ADDRESS,
+} from '../common/constants';
 
 const { chains, provider } = configureChains(
   [chain.mainnet, chain.goerli],
@@ -51,138 +55,172 @@ const wagmiClient = createClient({
 const ConnectWalletButton = () => {
   const { address, isConnected, isDisconnected } = useAccount();
   const { disconnect } = useDisconnect();
-  const { data: signature, signMessageAsync } = useSignMessage();
-  const addressInfo = useRef({ address });
-  const [tokenBalance, setTokenBalance] = useState(300);
+  // const { data: signature, signMessageAsync } = useSignMessage();
+  // const addressInfo = useRef({ address });
+  const [tokenBalance, setTokenBalance] = useState(0);
   const router = useRouter();
 
-  // const { data: signer } = useSigner();
+  const { data: signer } = useSigner();
 
-  // const tokenContract = useContract({
-  //   address: TOKEN_CONTRACT_ADDRESS,
-  //   abi: TOKEN_CONTRACT_ABI,
-  //   // signerOrProvider: signature,
-  // });
+  const tokenContract = useContract({
+    addressOrName: TOKEN_CONTRACT_ADDRESS,
 
-  useEffect(() => {
-    (async () => {
-      if (isConnected) {
-        // const balance = await tokenContract.balanceOf(address);
-        // setTokenBalance(parseInt(balance.toString()));
-        // console.log(tokenBalance);
-        // const currentAccessToken = getLocalStorage('accessToken');
-        // if (address && !currentAccessToken) {
-        //   await handleNonce(address);
-        // }
-        // await handleNonce(address);
-        // if (tokenBalance < 200) {
-        //   showMessage({
-        //     type: 'error',
-        //     title: 'You dont have enough 8DAO Token',
-        //     body: (
-        //       <Box>In order to login, You need at least 200 8DAO Token.</Box>
-        //     ),
-        //   });
-        //   disconnect();
-        // } else {
-        router.push('/buidlers');
-        // }
-      }
-    })();
-  }, [isConnected]);
+    contractInterface: TOKEN_CONTRACT_ABI,
+    signerOrProvider: signer,
+  });
 
-  useEffect(() => {
-    (async () => {
-      const currentAccessToken = getLocalStorage('accessToken');
-      if (signature && !currentAccessToken) {
-        await signIn(signature);
-      }
-    })();
-  }, [signature]);
+  const getBalance = async () => {
+    let balance = await tokenContract.balanceOf(address);
 
-  useEffect(() => {
-    const currentAccessToken = getLocalStorage('accessToken');
-    if (isDisconnected && currentAccessToken) {
-      removeLocalStorage('accessToken');
-      refreshAPIToken();
+    if (balance.toNumber() === 0) {
+      return 0;
     }
-  }, [isDisconnected]);
+    balance = parseInt(balance.toString());
 
-  useEffect(() => {
-    (async () => {
-      if (
-        addressInfo.current.address &&
-        addressInfo.current.address !== address
-      ) {
-        removeLocalStorage('accessToken');
-        refreshAPIToken();
-        disconnect();
-        addressInfo.current.address = undefined;
-        window.location.reload();
-      }
-    })();
-  }, [address]);
+    console.log('parseInt(balance.toString())', parseInt(balance.toString()));
+    return balance;
+  };
 
-  const handleNonce = async () => {
+  // useEffect(() => {
+  //   console.log('tokenBalance', tokenBalance);
+  //   if (isConnected && tokenBalance < 200) {
+  //     showMessage({
+  //       type: 'error',
+  //       title: 'You dont have enough 8DAO Token',
+  //       body: <Box>In order to login, You need at least 200 8DAO Token.</Box>,
+  //     });
+  //     disconnect();
+  //   } else if (isConnected && tokenBalance >= 200) {
+  //     router.push('/buidlers');
+  //   }
+  // }, [tokenBalance]);
+
+  const handleGetBalance = async () => {
     try {
-      console.log(tokenBalance);
-      if (tokenBalance < 2) {
+      const balance = await getBalance();
+      console.log('balance', balance);
+      if (isConnected && balance < 200) {
         showMessage({
           type: 'error',
           title: 'You dont have enough 8DAO Token',
-          body: (
-            <Box>
-              You need at least 200 8DAO Token. Please get more to login.
-            </Box>
-          ),
+          body: <Box>In order to login, You need at least 200 8DAO Token.</Box>,
         });
         disconnect();
-      } else if (signatureMessage) {
-        await signMessageAsync({
-          message: signatureMessage,
-        });
+      } else if (isConnected && balance >= 200) {
+        router.push('/buidlers');
       }
+      setTokenBalance(balance);
     } catch (err) {
       showMessage({
         type: 'error',
-        title: 'Failed to sign-in',
+        title: 'Failed to connect',
         body: err.message,
       });
-      disconnect();
-    }
-  };
-
-  const signIn = async (signature) => {
-    try {
-      const signinRes = await API.post(`/auth/signin`, {
-        address: address,
-        signature: signature,
-      });
-
-      const accessToken = signinRes.data?.data?.access_token;
-      setLocalStorage('accessToken', accessToken);
-      refreshAPIToken();
-      addressInfo.current.address = address;
-    } catch (err) {
-      showMessage({
-        type: 'error',
-        title: 'Failed to sign-in',
-        body: err.message,
-      });
-      disconnect();
     }
   };
 
   return (
     <div>
-      <ConnectButton
-        showBalance={false}
+      {/* <ConnectButton
+        showBalance={true}
         chainStatus="none"
         accountStatus={{
           smallScreen: 'avatar',
           largeScreen: 'full',
         }}
-      />
+        onClick={handleGetBalance()}
+      /> */}
+      <ConnectButton.Custom>
+        {({
+          account,
+          chain,
+          openAccountModal,
+          openChainModal,
+          openConnectModal,
+          mounted,
+        }) => {
+          const ready = mounted;
+          const connected = ready && account && chain;
+
+          return (
+            <div
+              {...(!ready && {
+                'aria-hidden': true,
+                style: {
+                  opacity: 0,
+                  pointerEvents: 'none',
+                  userSelect: 'none',
+                },
+              })}
+            >
+              {(() => {
+                if (!connected) {
+                  return (
+                    <button
+                      onClick={function () {
+                        openConnectModal();
+                      }}
+                      type="button"
+                    >
+                      Connect Wallet
+                    </button>
+                  );
+                }
+
+                if (chain.unsupported) {
+                  return (
+                    <button onClick={openChainModal} type="button">
+                      Wrong network
+                    </button>
+                  );
+                }
+
+                return (
+                  <div style={{ display: 'flex', gap: 12 }}>
+                    <button
+                      onClick={openChainModal}
+                      style={{ display: 'flex', alignItems: 'center' }}
+                      type="button"
+                    >
+                      {chain.hasIcon && (
+                        <div
+                          style={{
+                            background: chain.iconBackground,
+                            width: 12,
+                            height: 12,
+                            borderRadius: 999,
+                            overflow: 'hidden',
+                            marginRight: 4,
+                          }}
+                        >
+                          {chain.iconUrl && (
+                            <img
+                              alt={chain.name ?? 'Chain icon'}
+                              src={chain.iconUrl}
+                              style={{ width: 12, height: 12 }}
+                            />
+                          )}
+                        </div>
+                      )}
+                      {chain.name}
+                    </button>
+                    <button onClick={openAccountModal} type="button">
+                      {account.displayName}
+                      {account.displayBalance
+                        ? ` (${account.displayBalance})`
+                        : ''}
+                    </button>
+                  </div>
+                );
+              })()}
+            </div>
+          );
+        }}
+      </ConnectButton.Custom>
+
+      {isConnected && (
+        <button onClick={handleGetBalance}>View member card</button>
+      )}
     </div>
   );
 };

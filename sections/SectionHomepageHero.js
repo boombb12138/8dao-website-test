@@ -37,7 +37,7 @@ const HightlightText = styled.span`
 const SectionHomepageHero = () => {
   const Title = () => {
     return (
-      <Box >
+      <Box>
         <Box>
           <Typography variant="h1">8DAO is a</Typography>
           <HightlightText>MEMBERSHIP-BASED</HightlightText>
@@ -50,6 +50,7 @@ const SectionHomepageHero = () => {
 
   return (
     <Container
+      bgcolor="black"
       minHeight={{ md: '800px', xs: '660px' }}
       display="flex"
       flexDirection={{ lg: 'row', xs: 'column' }}
@@ -69,17 +70,17 @@ const SectionHomepageHero = () => {
         <Title />
         <Box display={{ md: 'block', sm: 'none', xs: 'none' }}>
           <Typography variant="subtitle1" lineHeight="36px" color="#667085">
-          In order to view the member list, you need to connect wallet.
+            In order to view the member list, you need to connect wallet.
           </Typography>
         </Box>
         <Box display={{ md: 'none', sm: 'block', xs: 'block' }}>
           <Typography variant="subtitle1" lineHeight="36px" color="#667085">
-         In order to view the member list, you need to connect wallet.
+            In order to view the member list, you need to connect wallet.
           </Typography>
         </Box>
-        
+
         <ConnectWalletButton />
-        
+
         <CommunityLinkGroup />
         {/* <ActivityNotification /> */}
       </Box>

@@ -64,7 +64,7 @@ export default function Layout({ children, title, description }) {
       </Head>
 
       <CssBaseline bgcolor="black" />
-      <Box bgcolor="black">
+      <Box>
         {/* <Header /> */}
         <Box minHeight={'100vh'}>{children}</Box>
         <Footer />

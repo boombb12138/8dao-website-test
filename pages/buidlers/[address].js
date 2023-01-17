@@ -592,7 +592,7 @@ function BuidlerDetails(props) {
                 variant="h5"
                 fontWeight="500"
                 textAlign="center"
-                color="#fff"
+                color="#000"
                 marginTop={3}
                 marginBottom={1}
               >

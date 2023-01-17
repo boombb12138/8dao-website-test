@@ -116,7 +116,7 @@ export function BuidlerCard(props) {
               sx={{
                 lineHeight: '24px',
                 fontWeight: '500',
-                color: '#ebebeb',
+                color: '#000',
                 textOverflow: 'ellipsis',
                 overflow: 'hidden',
                 whiteSpace: 'nowrap',
@@ -135,7 +135,7 @@ export function BuidlerCard(props) {
               variant="body1"
               sx={{
                 lineHeight: '24px',
-                color: 'rgba(255, 255, 255, 0.5)',
+                color: 'rgba(0, 0, 0, 0.5)',
               }}
             >
               {record.description}
@@ -152,7 +152,7 @@ export function BuidlerCard(props) {
         {!simpleMode && skills.length > 0 && (
           <Box marginTop={2}>
             <Typography
-              color="#fff"
+              color="#000"
               fontWeight="600"
               marginBottom={1}
               variant="body1"
@@ -167,7 +167,7 @@ export function BuidlerCard(props) {
         {!simpleMode && skills.length > 0 && (
           <Box marginTop={2}>
             <Typography
-              color="#fff"
+              color="#000"
               fontWeight="600"
               marginBottom={1}
               variant="body1"
@@ -210,22 +210,26 @@ let skillNames = [
 
 function usePagination(data, itemsPerPage) {
   const [currentPage, setCurrentPage] = useState(1);
-  const maxPage = Math.ceil(data.length / itemsPerPage);
+  const maxPage = Math.ceil(data.length / itemsPerPage); //todo 没有办法计算总共有多少页
 
   function currentData() {
     const begin = (currentPage - 1) * itemsPerPage;
     const end = begin + itemsPerPage;
+    // return data;
     return data.slice(begin, end);
   }
   function next() {
     setCurrentPage((currentPage) => Math.min(currentPage + 1, maxPage));
+    // searchList(search, role, skill, currentPage, true);
   }
   function prev() {
     setCurrentPage((currentPage) => Math.max(currentPage - 1, 1));
+    // searchList(search, role, skill, currentPage, true);
   }
   function jump(page) {
     const pageNumber = Math.max(1, page);
     setCurrentPage(() => Math.min(pageNumber, maxPage));
+    // searchList(search, role, skill, currentPage, true);
   }
   return { next, prev, jump, currentData, currentPage, maxPage };
 }
@@ -248,7 +252,6 @@ export default function Home() {
   let [page, setPage] = useState(1);
   const PER_PAGE = 6;
 
-  console.log('address', address);
   const searchList = async (
     search = '',
     role = '',
@@ -308,7 +311,7 @@ export default function Home() {
     }
   };
 
-  const saveProfileHandler = async (newMetaData) => {
+  const addProfileHandler = async (newMetaData) => {
     setUpdating(true);
     const userProfile = {
       ...newMetaData,
@@ -316,16 +319,15 @@ export default function Home() {
       image: `${process.env.NEXT_PUBLIC_LXDAO_BACKEND_API}/buidler/${record.address}/card`,
     };
     try {
-      // todo axios的put请求？
-      // mark 将Profile Details存储起来
-      const response = await API.put(`/buidler/${address}`, {
-        metaData: userProfile,
+      const response = await API.post(`/buidler`, {
+        address: address,
       });
       const result = response?.data;
       if (result.status !== 'SUCCESS') {
         throw new Error(result.message);
       }
       setVisible(false);
+      alert('created!');
       props.refresh();
     } catch (err) {
       showMessage({
@@ -338,6 +340,7 @@ export default function Home() {
   };
 
   const count = Math.ceil(list.length / PER_PAGE); //页数
+  // const _DATA = usePagination(search, role, skill, current, PER_PAGE);
   const _DATA = usePagination(list, PER_PAGE);
   const handlePaginationChange = async (e, p) => {
     setPage(p);
@@ -350,7 +353,7 @@ export default function Home() {
   const styles = useStyles();
 
   return (
-    <Layout title="LXDAO Buidlers | LXDAO">
+    <Layout title="8DAO Members | 8DAO">
       <Container paddingY={{ md: 12, xs: 8 }} maxWidth={1216}>
         <Box
           display="flex"
@@ -364,7 +367,7 @@ export default function Home() {
               fontSize="70px"
               fontWeight={600}
               lineHeight="70px"
-              color="#f0f0f0"
+              color="#000"
             >
               8DAO Members
             </Typography>
@@ -549,6 +552,7 @@ export default function Home() {
                 //_.pick(object, [props]) 创建一个从 object 中选中的属性的对象。
                 _.pick(record, [
                   'avatar',
+                  'address',
                   'name',
                   'description',
                   'skills',
@@ -556,7 +560,7 @@ export default function Home() {
                   'contacts',
                 ])
               )}
-              saveProfileHandler={saveProfileHandler}
+              addProfileHandler={addProfileHandler}
             />
           </DialogContent>
         </Dialog>
