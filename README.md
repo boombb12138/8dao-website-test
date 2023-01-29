@@ -1,3 +1,3 @@
 # lxdao-website
 
-deploy
+deploy.
