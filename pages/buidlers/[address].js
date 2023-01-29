@@ -41,7 +41,7 @@ import Skills from '@/components/Skills';
 import { formatAddress } from '@/utils/utility';
 import API from '@/common/API';
 import { getEtherScanDomain, getOpenSeaDomain } from '@/utils/utility';
-import { contractInfo } from '@/components/ContractsOperation';
+import { contractInfo } from '@/components/ContractsOperation'; //sbt合约
 import BuidlerContacts from '@/components/BuidlerContacts';
 import Tag from '@/components/Tag';
 import showMessage from '@/components/showMessage';
@@ -269,6 +269,8 @@ function BuidlerDetails(props) {
     setMinting(true);
     try {
       // get signature
+      // 怎么得到测试用户的signatureRes 因为在服务器里面没有测试用户，就是当前连接钱包的地址的信息
+      // 必须把测试地址放到数据库里面，就可以让成员信息列表里面多一条测试的用户builder card，同时这里在发送post就可以请求到数据
       const signatureRes = await API.post(`/buidler/${address}/signature`);
       const signature = signatureRes.data.data.signature;
 
@@ -293,22 +295,6 @@ function BuidlerDetails(props) {
       });
     }
     setMinting(false);
-  };
-
-  const enableMint = async () => {
-    try {
-      const enableMintRes = await API.post(
-        `/buidler/${record.address}/enableMint`
-      );
-      const data = enableMintRes.data.data;
-      alert('Success!');
-    } catch (err) {
-      showMessage({
-        type: 'error',
-        title: 'Failed to enable mint access',
-        body: err.message,
-      });
-    }
   };
 
   const saveProfileHandler = async (newMetaData) => {
@@ -356,34 +342,12 @@ function BuidlerDetails(props) {
 
   return (
     <Container paddingY={{ md: 12, xs: 8 }}>
-      {address === record.address && record.status === 'PENDING' && (
-        <Box marginTop={4}>
-          <Alert severity="success">
-            Welcome LXDAO. Please fill up the form first, and your Buddy will
-            enable your Mint access on the Onboarding Session. Thanks.
-          </Alert>
-          <Box
-            display="flex"
-            justifyContent="center"
-            marginTop={4}
-            marginBottom={4}
-          >
-            <LXButton width="200px" disabled={true} variant="gradient">
-              {minting ? 'Minting Builder Card...' : 'Mint Builder Card'}
-            </LXButton>
-          </Box>
-          <Box display="flex" justifyContent="center" marginBottom={6}>
-            <Typography variant="body1" fontWeight="400">
-              We will arrange on-boarding as soon as possible and help you mint
-              buidler card
-            </Typography>
-          </Box>
-        </Box>
-      )}
-      {address === record.address && record.status === 'READYTOMINT' && (
+      {/* 这个address是现在登录的地址  */}
+      {/* address === record.address && record.status === 'READYTOMINT' && */}
+      {
         <Box marginTop={4}>
           <Alert severity="info">
-            Welcome LXDAO. Your Buidler Card is Ready to Mint.
+            Welcome 8DAO. Your Member Card is Ready to Mint.
           </Alert>
           <Box
             display="flex"
@@ -398,26 +362,11 @@ function BuidlerDetails(props) {
                 mint();
               }}
             >
-              {minting ? 'Minting Builder Card...' : 'Mint Builder Card'}
+              {minting ? 'Minting Member Card...' : 'Mint Member Card'}
             </LXButton>
           </Box>
         </Box>
-      )}
-      {isBuddyChecking && record.status === 'PENDING' && (
-        <Box marginTop={4}>
-          <Alert severity="info">Enable Mint Access</Alert>
-          <Box marginTop={2} marginBottom={2}>
-            <Button
-              onClick={() => {
-                enableMint();
-              }}
-              variant="outlined"
-            >
-              Enable Mint Access
-            </Button>
-          </Box>
-        </Box>
-      )}
+      }
       {tx && (
         <Dialog
           maxWidth="383px"
@@ -469,6 +418,7 @@ function BuidlerDetails(props) {
         </Dialog>
       )}
 
+      {/* 如果txRes有值，代表mint成功 */}
       {txRes && (
         <Dialog
           maxWidth="383px"
@@ -497,7 +447,7 @@ function BuidlerDetails(props) {
               textAlign="left"
               marginTop={2}
             >
-              Congratulations, LXDAO Buidler card Mint succeeded！
+              Congratulations, 8DAO Member card Mint succeeded！
             </Typography>
             <Box marginTop={3} marginBottom={3} margin="auto">
               <img
@@ -990,7 +940,7 @@ export default function Buidler() {
   if (loading) return null;
 
   return (
-    <Layout title={`${record && record.name} Buidler Profile | LXDAO`}>
+    <Layout title={`${record && record.name} Buidler Profile | 8DAO`}>
       {record ? (
         <BuidlerDetails
           refresh={() => {

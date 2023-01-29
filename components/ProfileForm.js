@@ -56,7 +56,7 @@ function ProfileForm(props) {
     if (JSON.stringify(errors) !== '{}') {
       return (
         <Button variant="contained" size="large" disabled={true}>
-          Update Profile
+          Add Member
         </Button>
       );
     }
@@ -64,14 +64,14 @@ function ProfileForm(props) {
     if (props.updating) {
       return (
         <Button variant="contained" size="large" disabled={true}>
-          Updating Profile...
+          Adding Member...
         </Button>
       );
     }
 
     return (
       <Button variant="contained" size="large" onClick={handleSubmit(onSubmit)}>
-        Update Profile
+        Add Member
       </Button>
     );
   }

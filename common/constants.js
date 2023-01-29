@@ -431,6 +431,5 @@ export const TOKEN_CONTRACT_ABI = [
     type: 'function',
   },
 ];
-
 export const TOKEN_CONTRACT_ADDRESS =
-  '0xB594f65151FF240e378c611dD68112df67bD420d';
+  '0xe9ce7B2AA220E01962B79b1b94f88BB14b277d12';

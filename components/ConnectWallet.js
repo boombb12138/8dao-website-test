@@ -1,17 +1,12 @@
 /* eslint-disable no-undef */
 import React, { useRef, useEffect, useState } from 'react';
 import { Box } from '@mui/material';
-import {
-  getDefaultWallets,
-  ConnectButton,
-  useConnectModal,
-} from '@rainbow-me/rainbowkit';
+import { getDefaultWallets, ConnectButton } from '@rainbow-me/rainbowkit';
 import {
   chain,
   configureChains,
   createClient,
   useAccount,
-  useSignMessage,
   useDisconnect,
   useSigner,
   useContract,
@@ -37,7 +32,8 @@ import {
 } from '../common/constants';
 
 const { chains, provider } = configureChains(
-  [chain.mainnet, chain.goerli],
+  // chain.mainnet,
+  [chain.goerli],
   [alchemyProvider({ apiKey: process.env.ALCHEMY_ID }), publicProvider()]
 );
 
@@ -64,12 +60,25 @@ const ConnectWalletButton = () => {
 
   const tokenContract = useContract({
     addressOrName: TOKEN_CONTRACT_ADDRESS,
-
     contractInterface: TOKEN_CONTRACT_ABI,
     signerOrProvider: signer,
   });
 
+  const mint8DAOToken = async (amount) => {
+    try {
+      // 怎样拿到这个token？
+      const tx = await tokenContract.mint(address, amount);
+
+      await tx.wait();
+      window.alert('Sucessfully minted 8DAO Tokens');
+      await getBalance();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const getBalance = async () => {
+    // 这里要得到用户的goerli代币余额
     let balance = await tokenContract.balanceOf(address);
 
     if (balance.toNumber() === 0) {
@@ -98,14 +107,19 @@ const ConnectWalletButton = () => {
   const handleGetBalance = async () => {
     try {
       const balance = await getBalance();
-      console.log('balance', balance);
+      console.log('balance', balance); //这里打印的余额不是用户的goerli代币余额
+      // 如果用户的goerli代币余额大于0.5就让他能够访问buidlers页面
       if (isConnected && balance < 200) {
         showMessage({
           type: 'error',
           title: 'You dont have enough 8DAO Token',
-          body: <Box>In order to login, You need at least 200 8DAO Token.</Box>,
+          body: (
+            <Box>
+              In order to view member card, You need at least 200 8DAO Token.
+            </Box>
+          ),
         });
-        disconnect();
+        // disconnect();
       } else if (isConnected && balance >= 200) {
         router.push('/buidlers');
       }
@@ -121,15 +135,6 @@ const ConnectWalletButton = () => {
 
   return (
     <div>
-      {/* <ConnectButton
-        showBalance={true}
-        chainStatus="none"
-        accountStatus={{
-          smallScreen: 'avatar',
-          largeScreen: 'full',
-        }}
-        onClick={handleGetBalance()}
-      /> */}
       <ConnectButton.Custom>
         {({
           account,
@@ -160,7 +165,12 @@ const ConnectWalletButton = () => {
                       onClick={function () {
                         openConnectModal();
                       }}
-                      type="button"
+                      style={{
+                        borderRadius: '10px',
+                        padding: '8px',
+                        marginTop: '10px',
+                        fontWeight: 600,
+                      }}
                     >
                       Connect Wallet
                     </button>
@@ -179,8 +189,15 @@ const ConnectWalletButton = () => {
                   <div style={{ display: 'flex', gap: 12 }}>
                     <button
                       onClick={openChainModal}
-                      style={{ display: 'flex', alignItems: 'center' }}
                       type="button"
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        borderRadius: '10px',
+                        padding: '8px',
+                        marginTop: '10px',
+                        fontWeight: 600,
+                      }}
                     >
                       {chain.hasIcon && (
                         <div
@@ -204,7 +221,16 @@ const ConnectWalletButton = () => {
                       )}
                       {chain.name}
                     </button>
-                    <button onClick={openAccountModal} type="button">
+                    <button
+                      onClick={openAccountModal}
+                      type="button"
+                      style={{
+                        borderRadius: '10px',
+                        padding: '8px',
+                        marginTop: '10px',
+                        fontWeight: 600,
+                      }}
+                    >
                       {account.displayName}
                       {account.displayBalance
                         ? ` (${account.displayBalance})`
@@ -219,7 +245,26 @@ const ConnectWalletButton = () => {
       </ConnectButton.Custom>
 
       {isConnected && (
-        <button onClick={handleGetBalance}>View member card</button>
+        <div>
+          <button
+            onClick={() => {
+              mint8DAOToken(300);
+            }}
+          >
+            Mint 8DAO Token
+          </button>
+          <button
+            onClick={handleGetBalance}
+            style={{
+              borderRadius: '10px',
+              padding: '8px',
+              marginTop: '10px',
+              fontWeight: 600,
+            }}
+          >
+            View member card
+          </button>
+        </div>
       )}
     </div>
   );

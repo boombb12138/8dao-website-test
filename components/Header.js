@@ -8,7 +8,6 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 
-
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const [governance, setGovernance] = useState(null);
@@ -100,106 +99,7 @@ const Header = () => {
       maxWidth="1216px"
       marginX={{ lg: 'auto', md: '20px', xs: '20px' }}
       bgcolor="black"
-    >
-      <Box
-        onClick={() => {
-          router.push('/');
-        }}
-        sx={{ cursor: 'pointer' }}
-        display="flex"
-      >
-        <Box
-          width={{ md: '120px', sm: '120px', xs: '80px' }}
-          component={'img'}
-          src={'/icons/8DAO.png'}
-        />
-      </Box>
-      {/* <Box
-        gap={4}
-        display={{ md: 'flex', sm: 'none', xs: 'none' }}
-        fontSize={2}
-        lineHeight={3}
-      >
-        <Typography
-          sx={{ cursor: 'pointer' }}
-          onClick={() => {
-            router.push('/buidlers');
-          }}
-        >
-          Buidlers
-        </Typography>
-        <Box>
-          <Box
-            sx={{ cursor: 'pointer' }}
-            onClick={(event) => {
-              handleGovernanceMenuClick(event);
-            }}
-            id="governance-menu-trigger"
-          >
-            <Typography style={{ float: 'left' }}>Governance</Typography>
-            <KeyboardArrowDownIcon />
-          </Box>
-          <Menu
-            id="governance-menu"
-            anchorEl={governance}
-            open={Boolean(governance)}
-            onClose={() => {
-              handleGovernanceMenuClose();
-            }}
-            MenuListProps={{ 'aria-labelledby': 'governance-menu-trigger' }}
-          >
-            <MenuItem
-              onClick={() => {
-                handleGovernanceMenuClose();
-              }}
-            >
-              <Link
-                href={`https://forum.lxdao.io/c/governance/weekly/11`}
-                target="_blank"
-                color={'inherit'}
-                sx={{
-                  textDecoration: 'none',
-                }}
-              >
-                Weekly
-              </Link>
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                handleGovernanceMenuClose();
-              }}
-            >
-              <Link
-                href={`https://forum.lxdao.io/c/governance/monthly-ama/12`}
-                target="_blank"
-                color={'inherit'}
-                sx={{
-                  textDecoration: 'none',
-                }}
-              >
-                AMA
-              </Link>
-            </MenuItem>
-          </Menu>
-        </Box>
-      </Box> */}
-    
-      <MenuIcon
-        sx={{
-          display: { md: 'none', sm: 'block', xs: 'block' },
-          cursor: 'pointer',
-        }}
-        onClick={toggleDrawer(true)}
-      />
-      <SwipeableDrawer
-        anchor="top"
-        open={openMenu}
-        onClose={toggleDrawer(false)}
-        onOpen={toggleDrawer(true)}
-      >
-        <HiddenMenu />
-      </SwipeableDrawer>
-    </Box>
+    ></Box>
   );
 };
 

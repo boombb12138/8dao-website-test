@@ -4,6 +4,7 @@ import { Box, Typography, Link } from '@mui/material';
 
 import Button from '@/components/Button';
 import Container from '@/components/Container';
+import Header from '@/components/Header';
 import CommunityLinkGroup from '@/components/CommunityLinkGroup';
 // import ActivityNotification from '@/components/ActivityNotification';
 import { ConnectWalletButton } from '@/components/ConnectWallet';
@@ -67,6 +68,7 @@ const SectionHomepageHero = () => {
         alignItems="flex-start"
         textAlign="left"
       >
+        <Header />
         <Title />
         <Box display={{ md: 'block', sm: 'none', xs: 'none' }}>
           <Typography variant="subtitle1" lineHeight="36px" color="#667085">
